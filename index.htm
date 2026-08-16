@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizmaster</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            Quiz<span>Master</span>
+        </div>
+
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#categories">Categories</a>
+            <a href="#">Leaderboard</a>
+            <a href="#">Login</a>
+        </div>
+    </nav>
+
+
+    <section class="hero">
+        <div class="hero-content">
+            <p class="tagline">Challenge yourself</p>
+            <h1>
+                Test your Knowledge<br>
+                <span>One Quiz At a Time</span>
+            </h1>
+
+            <p class="description">
+                Challenge yourself with exciting quizzes,
+                improve your knowledge and complete with others.
+            </p>
+
+            <button class="start-btn" onclick="startQuiz()">
+                start Quiz ->
+            </button>
+        </div>
+
+        <div class="Quiz-card">
+            <div class="card-top">
+                <span>🧠</span>
+                <span>Question 01</span>
+            </div>
+
+            <h2>Which language is used to create interactive web page?</h2>
+
+            <div class="option">DBMS</div>
+            <div class="option correct">FRONTEND</div>
+            <div class="option">COMPUTER NETWORKS</div>
+            <div class="option">OBJECT ORIENTED PROGRAMMING SYSTEM</div>
+        </div>
+    </section>
+
+    <section class="categories" id="categories">
+        <h2>Explore Categories</h2>
+        <p>Choose ypur favorite topic and start learning.</p>
+        <div class="category-container">
+            <div class="category">
+                <div class="icon">🟧</div>
+                <h3>FRONTEND</h3>
+                <p>20+ Quizzes</p>
+            </div>
+
+            <div class="category">
+                <div class="icon">📊</div>
+                <h3>DBMS</h3>
+                <p>25+ Quizzes</p>
+            </div>
+
+            <div class="category">
+                <div class="icon">🌐</div>
+                <h3>COMPUTER NETWORKS</h3>
+                <p>15+ Quizzes</p>
+            </div>
+
+            <div class="category">
+                <div class="icon">🧑‍💻</div>
+                <h3>OBJECT OREINTED PROGRAMMING SYSTEM</h3>
+                <p>30+ Quizzes</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2>My QuizMaster?</h2>
+        <div class="feature-container">
+            <div class="feature">
+                <span>🧠</span>
+                <h3>Improve Knowledge</h3>
+                <p>Learn new concepts while solving interesting questions.</p>
+            </div>
+
+            <div class="feature">
+                <span>🏆</span>
+                <h3>Track Your Score</h3>
+                <p>Check your performance and improve your score.</p>
+            </div>
+
+            <div class="feature">
+                <span>⚡</span>
+                <h3>Quiz Quizzes</h3>
+                <p>Take Short Quizzes anytime and anywhere.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <h2>QuizMaster</h2>
+        <p>Learn • Play • Improve</p>
+        <p>@ 2026 Quizmaster. Al Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
