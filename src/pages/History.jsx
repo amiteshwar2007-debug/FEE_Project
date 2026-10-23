@@ -1,0 +1,107 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { FaHistory, FaTrashAlt, FaFileAlt } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import { clearHistory as clearAction } from '../store/historySlice';
+
+export default function History() {
+  const { user } = useAuth();
+  const dispatch = useDispatch();
+  const logs = useSelector((s) => s.history[user.id]) || [];
+  const clearHistory = () => window.confirm('Clear your assessment history?') && dispatch(clearAction(user.id));
+
+  // Performance calculations
+  const totalAttempts = logs.length; // Total completed tests
+  const avgAccuracy = totalAttempts
+    ? Math.round(logs.reduce((acc, l) => acc + (l.percentage || 0), 0) / totalAttempts)
+    : 0; // Average percentage accuracy across all tests
+  const bestScore = logs.reduce((best, l) => (l.percentage > (best.percentage || 0) ? l : best), { percentage: 0, score: 0, total: 0 }); // Highest percentage attempt
+
+  return (
+    <main className="container">
+      {/* Page Header */}
+      <div style={{ marginBottom: '2rem' }}>
+        <div className="badge" style={{ marginBottom: '0.5rem', display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+          <FaHistory /> Personal Performance Logs
+        </div>
+        <h1 style={{ fontSize: '2.2rem', marginBottom: '0.4rem' }}>
+          {user ? `${user.name}'s Assessment History` : 'My Assessment History'}
+        </h1>
+        <p style={{ color: 'var(--text-muted)' }}>
+          Review your personal test records, accuracy scores, and placement preparation drills.
+        </p>
+      </div>
+
+      {logs.length > 0 ? (
+        <>
+          {/* Summary statistics strip: Total tests, average accuracy, and best score */}
+          <div className="stats-strip" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginBottom: '2rem' }}>
+            <div><span className="stat-num">{totalAttempts}</span><span className="stat-label">Tests Completed</span></div>
+            <div><span className="stat-num">{avgAccuracy}%</span><span className="stat-label">Average Accuracy</span></div>
+            <div><span className="stat-num">{bestScore.score} / {bestScore.total}</span><span className="stat-label">Best Score</span></div>
+          </div>
+
+          {/* Action bar with clear history button and start new quiz button */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+            <span style={{ fontWeight: 700, color: 'var(--text-secondary)' }}>
+              Logged assessment drills for {user?.name || 'Student'}:
+            </span>
+            <div style={{ display: 'flex', gap: '0.6rem' }}>
+              <button type="button" className="btn btn-outline btn-sm" onClick={clearHistory} style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                <FaTrashAlt /> Clear History
+              </button>
+              <Link to="/quiz" className="btn btn-primary btn-sm">+ Start New Assessment</Link>
+            </div>
+          </div>
+
+          {/* Records Table */}
+          <div className="table-container">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>Subject Track</th>
+                  <th>Difficulty</th>
+                  <th>Score</th>
+                  <th>Accuracy</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {logs.map((log, i) => {
+                  // Color-coded pill class based on accuracy percentage
+                  const pillClass = log.percentage >= 75 ? 'pct-high' : log.percentage >= 50 ? 'pct-mid' : 'pct-low';
+                  return (
+                    <tr key={i}>
+                      <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700 }}>#{i + 1}</td>
+                      <td>{log.date}</td>
+                      <td style={{ fontWeight: 700 }}>{log.subject}</td>
+                      <td style={{ textTransform: 'capitalize' }}>{log.difficulty}</td>
+                      <td style={{ fontWeight: 700 }}>{log.score} / {log.total}</td>
+                      <td><span className={`pct-pill ${pillClass}`}>{log.percentage}%</span></td>
+                      <td><Link to="/quiz" className="btn btn-outline btn-sm">Retake ↺</Link></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+        /* Empty state: Displayed when no quiz records exist */
+        <div className="card empty-state">
+          <div className="empty-icon">
+            <FaFileAlt style={{ fontSize: '3rem', color: 'var(--text-muted)' }} />
+          </div>
+          <h3 style={{ marginBottom: '0.4rem' }}>No assessment attempts recorded for this account!</h3>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '1.2rem' }}>
+            Complete a quiz assessment in the arena to log your scores under {user?.name || 'this account'}.
+          </p>
+          <Link to="/quiz" className="btn btn-primary">Take Your First Quiz Now →</Link>
+        </div>
+      )}
+    </main>
+  );
+}
